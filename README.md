@@ -14,6 +14,66 @@ Python modules listed in the <a href="/requirements.txt">requirements.txt<a/>
   
 Minimum <a href="#memory-consumption">RAM requirements</a>
 
+# Environment on Ubuntu 18.04
+## Plutus.py set up environment
+Set up environment, based on python 3.6
+```
+sudo apt-get install \
+python3 \
+python-dev \
+python3-dev \
+python3-pip \
+build-essential \
+libgmp3-dev --yes \
+&& pip3 install \
+fastecdsa \
+starkbank-ecdsa==0.1.4
+```
+
+## Install Bitcoin Core
+Use snap install Bitcoin Core client
+```
+sudo snap install bitcoin-core
+```
+
+## Dump positive balance to csv from Bitcoin Core client on Ubuntu 18.04
+Reference repo [btcposbal2csv](https://github.com/graymauser/btcposbal2csv)  
+
+You can find `hashlib-20081119.zip` and `sqlite-autoconf-3300100.tar.gz` in folder `utils`  
+
+Set up envirnment, based on python 2.7
+```
+cd \
+&& sudo apt-get install python-pip --yes \
+&& pip install --user plyvel base58 \
+&& wget https://files.pythonhosted.org/packages/74/bb/9003d081345e9f0451884146e9ea2cff6e4cc4deac9ffd4a9ee98b318a49/hashlib-20081119.zip \
+&& unzip hashlib-20081119.zip \
+&& cd hashlib-20081119 \
+&& sudo python setup.py install \
+&& cd .. \
+&& wget https://sqlite.org/2019/sqlite-autoconf-3300100.tar.gz \
+&& tar -xvf sqlite-autoconf-3300100.tar.gz \
+&& cd sqlite-autoconf-3300100 \
+&& ./configure --prefix=/home/user/usr/db/sqlite \
+&& make \
+&& sudo make install
+```
+
+Dump positive balance to csv from Bitcoin Core client
+```
+cd btcposbal2csv \
+&& python btcposbal2csv.py ~/snap/bitcoin-core/common/.bitcoin/chainstate /home/$USER/addresses_with_balance.csv
+```
+
+## Convert csv file to pickle files for plutus.py use
+We can use script [convert_to_pickle.py](database/convert_to_pickle.py) in this repo to generate pickle files from csv file
+
+From scratch
+
+- Create a folder named `db`
+- mv `convert_to_pickle.py` script to `$HOME` directory
+- run `python convert_to_pickle.py`
+
 # Installation
 
 ```
